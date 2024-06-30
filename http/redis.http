@@ -26,3 +26,8 @@ Content-Type: application/json
 {
   "key": "seungjo"
 }
+
+
+### Redis로 Spring Session 관리하기 - 조회
+
+GET http://localhost:8080/getSessionId
