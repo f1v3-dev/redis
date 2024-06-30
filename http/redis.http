@@ -1,0 +1,28 @@
+### Redis 값 조회 -  @PostMapping("/getRedisStringValue")
+
+POST http://localhost:8080/getRedisStringValue
+Content-Type: application/json
+
+{
+  "key": "f1v3"
+}
+
+
+### Redis 값 설정 - @PostMapping("/setRedisStringValue")
+
+POST http://localhost:8080/setRedisStringValue
+Content-Type: application/json
+
+{
+  "key": "seungjo",
+  "value": "back-end developer"
+}
+
+### Redis에 저장한 값 조회 -  @PostMapping("/getRedisStringValue")
+
+POST http://localhost:8080/getRedisStringValue
+Content-Type: application/json
+
+{
+  "key": "seungjo"
+}
