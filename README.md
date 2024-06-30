@@ -56,8 +56,75 @@ public class RedisService {
 }
 
 ```
+
 - `StringRedisTemplate`을 사용하여 다양한 타입의 자료구조를 다룰 수 있다.
 
 ![stringRedisTemplate.png](images/stringRedisTemplate.png)
 
 - 위와 같은 메서드를 통해 직렬화 및 역직렬화를 할 수 있어 유용
+
+## Spring Session을 Redis로 관리해보자
+
+- Spring Session Data Redis를 사용하여 세션을 Redis로 관리해보자
+
+_pom.xml_
+
+```xml
+
+<dependency>
+    <groupId>org.springframework.session</groupId>
+    <artifactId>spring-session-data-redis</artifactId>
+</dependency>
+```
+
+_RedisApplication.java_
+
+```java
+package com.f1v3.redis;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+
+@EnableRedisHttpSession
+@SpringBootApplication
+public class RedisApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(RedisApplication.class, args);
+    }
+
+}
+
+```
+
+- `@EnableRedisHttpSession`을 사용하면 세션을 Redis로 관리할 수 있게 된다.
+- 자신의 Session 값을 얻어오는 Controller를 만들어보자
+
+_RedisController.java_
+
+```java
+@GetMapping("/getSessionId")
+public String getSessionId(HttpSession session) {
+    return session.getId();
+}
+```
+
+위의 API를 호출한다면 Redis에 저장된 세션 ID를 얻을 수 있다.  
+또한, Redis CLI를 통해 저장된 세션을 조회해보자.
+
+_Redis CLI_
+
+```shell
+keys *
+```
+
+![img.png](images/spring_session.png)
+
+- 해당 데이터는 `hashMap` 형태로 저장되어 있음!
+  ![img.png](images/redis_hashes.png)
+
+- 해시 맵(hashMap)은 `hget` 명령어를 통해 조회할 수 있다.
+- `hgetall` 명령어로 모든 데이터를 조회해보자
+
+![img.png](images/hgetall.png)
